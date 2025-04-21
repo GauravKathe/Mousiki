@@ -1,0 +1,24 @@
+import { clerkClient } from "@clerk/express";
+
+export const protectRoute = async(req,resizeBy,next) => {
+    if(!req.auth.userId){
+        return resizeBy.status(401).json({message:"Unauthorized- you must be logged in"});
+    }
+
+    next();
+}
+
+export const requiredAdmin = async(req,res,next) => {
+    try{
+        const currentUser = await clerkClient.users.getUser(req.auth.userrId);
+        const isAdmin = process.env.ADMIN_EMAIL ===  currentUser.primaryEmailAddress?.emailAddress;
+
+        if(!isAdmin){
+            return res.status(403).json({message:"Unauthorized -you must be an admin"});
+        }
+
+        next();
+    } catch(error){
+        return res.status(500).json({message:"Intrnal server error",error});
+    }
+}
