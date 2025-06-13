@@ -1,6 +1,7 @@
 import {Song} from "../models/song.model.js";
 import {Album} from "../models/album.model.js";
 import cloudinary from "../lib/cloudinary.js"; 
+
 const uploadToCloudinary = async (file) => {
     try {
         const result = await cloudinary.uploader.upload(file.tempFilePath,{
@@ -104,3 +105,7 @@ export const deleteAlbum = async(req,res,next) => {
     }
 
 };
+
+export const checkAdmin = async(req,res,next) =>{
+    res.status(200).json({admin:true});
+}

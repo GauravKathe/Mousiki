@@ -26,6 +26,11 @@ app.use(clerkMiddleware()); // this will add auth to req obj
 app.use(fileUpload({
     useTempFiles:true,
     tempFileDir:path.join(__dirname,"tmp"),
+    createParentPath:true,
+    limits:{
+        fileSize:10 * 1024 * 1024 // 10 MB maax file size
+    }
+    
 }));
 
 app.use("/api/users",userRoutes);
@@ -43,3 +48,4 @@ app.listen(PORT,() =>{
     console.log("Server is running on port "+PORT);
     connectDB();
 })
+
